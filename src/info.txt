@@ -1,0 +1,9 @@
+* refer this for font awasome icons 
+https://oblador.github.io/react-native-vector-icons/
+
+* main back ground color 
+#10375C
+ 
+* blur color 
+#10375cd9
+
