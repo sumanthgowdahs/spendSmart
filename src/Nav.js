@@ -5,6 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,16 +13,50 @@ import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { BlurView } from '@react-native-community/blur';
+import {useDispatch, useSelector} from 'react-redux';
+import {addExpense} from './redux/reducers';
 
 export default function Nav() {
+  const dispatch = useDispatch();
   let [addModal, setAddModal] = useState(false);
+  const [inputText, setInputText] = useState({spentAmount: '', details: ''});
+  const {expenseList} = useSelector(store => store.slice);
+
+  const spentAmount = expenseList.reduce((a, b, c) => {
+    return a + JSON.parse(b.spentAmount);
+  }, 0);
+
+  async function addExpenseToStore() {
+    if (inputText.spentAmount === '') {
+      Alert.alert('Please enter the amount');
+      return;
+    }
+    const date = new Date();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    const properDate = `${day}/${month}/${year}`;
+
+    dispatch(addExpense({...inputText, date: properDate}));
+
+    setAddModal(false);
+  }
   return (
     <View style={styles.container}>
       <StatusBar translucent={true} backgroundColor="transparent" />
       <TouchableOpacity>
         <EntypoIcon color="white" name="menu" size={40} />
       </TouchableOpacity>
+      <View style={styles.spentInfo}>
+        <View style={styles.spent}>
+          <Text style={styles.spentText}>-{spentAmount}</Text>
+        </View>
+
+        <View style={styles.remaining}>
+          <Text style={styles.remainingText}>remaining</Text>
+        </View>
+      </View>
       <TouchableOpacity
         onPress={() => {
           setAddModal(true);
@@ -29,26 +64,48 @@ export default function Nav() {
         style={styles.button}>
         <EntypoIcon color="black" size={35} name="plus" />
       </TouchableOpacity>
+
       <Modal
         transparent={true}
         animationType="slide"
         style={styles.modal}
         visible={addModal}>
-       {/* <BlurView
-          style={styles.absolute}
-          blurType="light"  // You can use 'light', 'dark', or 'xlight'
-          blurAmount={10}   // Adjust the blur intensity
-          reducedTransparencyFallbackColor="white"  // Fallback color for Android
-        /> */}
-        {/* <BlurView style={styles.absolute}> */}
         <View style={styles.addModal}>
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={()=>{setAddModal(false)}} style={styles.modalCloseButton}>
+            <TouchableOpacity
+              onPress={() => {
+                setAddModal(false);
+              }}
+              style={styles.modalCloseButton}>
               <EntypoIcon color="black" name="cross" size={35} />
             </TouchableOpacity>
+            <View>
+              <TextInput
+                keyboardType="numeric"
+                value={inputText.spentAmount}
+                placeholder="Enter amount"
+                onChangeText={text =>
+                  setInputText({...inputText, spentAmount: text})
+                }
+              />
+              <TextInput
+                extInput
+                value={inputText.details}
+                placeholder="Enter details"
+                onChangeText={text =>
+                  setInputText({...inputText, details: text})
+                }
+              />
+            </View>
+            <View style={styles.buttonView}>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={addExpenseToStore}>
+                <Text>Add</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        {/* </BlurView> */}
       </Modal>
     </View>
   );
@@ -56,7 +113,6 @@ export default function Nav() {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor:"green",
     paddingTop: 35,
     paddingRight: 10,
     display: 'flex',
@@ -79,8 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:"#10375cd9"
-    // backgroundColor:"rgba(0,0,0,0.5)"
+    backgroundColor: '#10375cd9',
   },
   modalContainer: {
     width: 330,
@@ -94,16 +149,58 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    // backgroundColor:"red"
   },
   absolute: {
-  
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    width:"100%",
-    height:"100%"
+    width: '100%',
+    height: '100%',
+  },
+  spentInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+
+    width: 250,
+  },
+  spent: {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  remaining: {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spentText: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  remainingText: {
+    color: 'white',
+  },
+  buttonView: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    width: '100%',
+    height: '50%',
+  },
+  addButton: {
+    width: 70,
+    height: 40,
+    backgroundColor: 'green',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 30,
+    borderRadius: 9,
   },
 });

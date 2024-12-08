@@ -11,18 +11,16 @@ import React, {useState} from 'react';
 import Nav from './Nav';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from './components/Home';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-// import EntypoIcon from 'react-native-vector-icons/Entypo';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Provider} from 'react-redux';
+import {store} from './redux/store';
+
 export default function App() {
-  const [navModalVisible, setNavModalVisible] = useState(false);
-
-
-
   return (
-    <View style={styles.container}>
-      <Home/>
-    </View>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <Home />
+      </View>
+    </Provider>
   );
 }
 
