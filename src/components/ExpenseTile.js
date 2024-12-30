@@ -3,20 +3,24 @@ import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 import {deleteExpense} from '../redux/reducers';
+import {colors} from '../../android/app/src/utils/colors';
+import {backUpData} from '../utils';
 
 export default function ExpenseTile({ele, index}) {
   const [infoHeight, setInfoHeight] = useState(false);
   const dispatch = useDispatch();
   function removeExpense(id) {
-    console.log(id);
+    backUpData('REMOVE', id);
     dispatch(deleteExpense(id));
   }
+
   return (
     <View style={[styles.tile, {height: infoHeight ? 80 : 40}]}>
       <View style={styles.infoTile}>
         <View style={[styles.upperInfo, {height: infoHeight ? '50%' : '100%'}]}>
           <Text style={styles.text}>{ele?.spentAmount}</Text>
           <Text>{ele?.date}</Text>
+
           <TouchableOpacity
             onPress={() => {
               setInfoHeight(!infoHeight);
@@ -30,7 +34,7 @@ export default function ExpenseTile({ele, index}) {
         </View>
         {infoHeight ? (
           <View style={styles.lowerInfo}>
-            <Text>sdajsdasdasj</Text>
+            <Text>{ele.details}</Text>
           </View>
         ) : (
           <View></View>
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
   },
   tile: {
     width: 350,
-    // backgroundColor: 'white',
+    // backgroundColor: 'red',
     marginBottom: 3,
     // textAlign: 'cennter',
     display: 'flex',
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   infoTile: {
-    backgroundColor: 'white',
+    backgroundColor: '#e0e0e0',
     width: '85%',
     height: '100%',
     borderRadius: 9,
@@ -76,6 +80,9 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    borderColor: colors.orangeBorderColor,
+    borderStyle: 'solid',
+    borderWidth: 1,
   },
   buttonTile: {
     // backgroundColor: 'green',
@@ -87,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upperInfo: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     width: '85%',
     borderRadius: 9,
     display: 'flex',

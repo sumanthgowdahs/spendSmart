@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Nav from './Nav';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from './components/Home';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
+import {colors} from '../android/app/src/utils/colors';
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#10375C',
+    backgroundColor: colors.whiteBackgroundColor,
   },
   input: {
     width: 400,

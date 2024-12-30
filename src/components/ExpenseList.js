@@ -27,7 +27,7 @@ export default function ExpenseList(props) {
               setModalVisible(true);
             }}
             style={styles.viewAllButton}>
-            <Text> View All</Text>
+            <Text style={styles.viewAllButtonText}> View All</Text>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -38,7 +38,7 @@ export default function ExpenseList(props) {
           })}
         </ScrollView>
       </View>
-      <Modal visible={modalVisible}>
+      {/* <Modal style={styles.modal} visible={modalVisible}>
         <View style={styles.modalHeading}>
           <TouchableOpacity
             onPress={() => {
@@ -55,6 +55,26 @@ export default function ExpenseList(props) {
             })}
           </ScrollView>
         </View>
+      </Modal> */}
+      <Modal visible={modalVisible} transparent={true}>
+        <View style={[styles.modal]}>
+          <View style={styles.modalHeading}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false);
+              }}
+              style={styles.button}>
+              <AntDesign color="black" size={35} name="arrowleft" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalView}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {expenseList.map((ele, index) => {
+                return <ExpenseTile key={index} ele={ele} index={index} />;
+              })}
+            </ScrollView>
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -69,6 +89,11 @@ const styles = StyleSheet.create({
     gap: 2,
     alignItems: 'center',
   },
+  modal: {
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'red',
+  },
   modalView: {
     width: '100%',
     height: '100vh',
@@ -76,15 +101,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     alignItems: 'center',
-    backgroundColor: '#10375C',
+    backgroundColor: 'white',
   },
   modalHeading: {
     width: '100%',
-    backgroundColor: '#10375C',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
+    backgroundColor: 'white',
     padding: 9,
   },
   modalHeadingText: {
@@ -99,6 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
+
   headingText: {
     color: 'white',
     fontSize: 18,
@@ -106,10 +128,13 @@ const styles = StyleSheet.create({
   viewAllButton: {
     width: 60,
     height: 40,
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 9,
+    // borderRadius: 9,
+  },
+  viewAllButtonText: {
+    color: 'black',
   },
 });

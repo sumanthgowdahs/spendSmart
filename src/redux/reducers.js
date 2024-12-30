@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {act} from 'react';
 
 let initialState = {
   expenseList: [],
@@ -12,6 +11,9 @@ let slice = createSlice({
   initialState,
   reducers: {
     addIncome: (cState, action) => {},
+    serInitialValue: (cstate, action) => {
+      cstate.expenseList = action.payload;
+    },
     addExpense: (cState, action) => {
       cState.expenseList = [...cState.expenseList, action.payload];
     },
@@ -25,5 +27,5 @@ let slice = createSlice({
   },
 });
 
-export let {addExpense, deleteExpense} = slice.actions;
+export let {addExpense, deleteExpense, serInitialValue} = slice.actions;
 export default slice.reducer;

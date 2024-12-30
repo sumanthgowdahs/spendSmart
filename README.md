@@ -11,3 +11,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 - -------blur color
   #10375cd9
+
+backGrounfColor ---- #FFAA5A
+borderColor ----- #FF785A

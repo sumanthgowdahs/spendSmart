@@ -15,15 +15,17 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {addExpense} from './redux/reducers';
+import {colors} from '../android/app/src/utils/colors';
+import {backUpData} from './utils';
 
 export default function Nav() {
   const dispatch = useDispatch();
   let [addModal, setAddModal] = useState(false);
   const [inputText, setInputText] = useState({spentAmount: '', details: ''});
-  const {expenseList} = useSelector(store => store.slice);
+  const {expenseList = []} = useSelector(store => store.slice);
 
   const spentAmount = expenseList.reduce((a, b, c) => {
-    return a + JSON.parse(b.spentAmount);
+    return a + Number(b.spentAmount);
   }, 0);
 
   async function addExpenseToStore() {
@@ -38,6 +40,7 @@ export default function Nav() {
 
     const properDate = `${day}/${month}/${year}`;
 
+    backUpData('ADD', {...inputText, date: properDate});
     dispatch(addExpense({...inputText, date: properDate}));
 
     setAddModal(false);
@@ -54,7 +57,7 @@ export default function Nav() {
         </View>
 
         <View style={styles.remaining}>
-          <Text style={styles.remainingText}>remaining</Text>
+          <Text style={styles.remainingText}></Text>
         </View>
       </View>
       <TouchableOpacity
@@ -62,7 +65,7 @@ export default function Nav() {
           setAddModal(true);
         }}
         style={styles.button}>
-        <EntypoIcon color="black" size={35} name="plus" />
+        <EntypoIcon color="white" size={35} name="plus" />
       </TouchableOpacity>
 
       <Modal
@@ -79,8 +82,10 @@ export default function Nav() {
               style={styles.modalCloseButton}>
               <EntypoIcon color="black" name="cross" size={35} />
             </TouchableOpacity>
-            <View>
+            <View style={styles.inputView}>
               <TextInput
+                style={styles.inputStyle}
+                placeholderTextColor={'black'}
                 keyboardType="numeric"
                 value={inputText.spentAmount}
                 placeholder="Enter amount"
@@ -89,7 +94,8 @@ export default function Nav() {
                 }
               />
               <TextInput
-                extInput
+                style={styles.inputStyle}
+                placeholderTextColor={'black'}
                 value={inputText.details}
                 placeholder="Enter details"
                 onChangeText={text =>
@@ -101,7 +107,7 @@ export default function Nav() {
               <TouchableOpacity
                 style={styles.addButton}
                 onPress={addExpenseToStore}>
-                <Text>Add</Text>
+                <Text style={styles.addButtonText}>Add</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   button: {
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -135,11 +141,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#10375cd9',
+    backgroundColor: colors.transparentColor,
+    // backgroundColor: 'white',
   },
   modalContainer: {
     width: 330,
     height: 400,
+    // backgroundColor: colors.whiteBackgroundColor,
     backgroundColor: 'white',
     borderRadius: 15,
   },
@@ -184,7 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   remainingText: {
-    color: 'white',
+    color: 'black',
   },
   buttonView: {
     display: 'flex',
@@ -196,11 +204,30 @@ const styles = StyleSheet.create({
   addButton: {
     width: 70,
     height: 40,
-    backgroundColor: 'green',
+    backgroundColor: colors.orangeBorderColor,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 30,
     borderRadius: 9,
+  },
+  addButtonText: {
+    color: 'white',
+  },
+  inputView: {
+    width: '100%',
+    display: 'flex',
+    gap: 5,
+    alignItems: 'center',
+  },
+  inputStyle: {
+    // borderColor: '#FF785A',
+    borderRadius: 9,
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    backgroundColor: '#e0e0e0',
+    // backgroundColor: 'white',
+    width: '90%',
+    height: 45,
   },
 });
