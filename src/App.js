@@ -7,19 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import Nav from './Nav';
-import Home from './components/Home';
+import React from 'react';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
 import {colors} from '../android/app/src/utils/colors';
+import Home from './compoents/Home';
+import AppNavigator from '../android/app/src/AppNavigator';
 
 export default function App() {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <Home />
-      </View>
+      <AppNavigator />
     </Provider>
   );
 }
