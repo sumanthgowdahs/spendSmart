@@ -2,13 +2,14 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import Home from '../../../src/compoents/Home';
-import Child from '../../../src/compoents/Child';
+import Home from './compoents/Home';
+import Child from './compoents/Child';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import Add from '../../../src/compoents/Add';
+import Add from './compoents/Add';
+import Login from './screens/Login';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,8 +20,8 @@ function TabGroup() {
         tabBarPressAnimationEnabled: false,
       }}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="Login"
+        component={Login}
         options={{
           tabBarIcon: () => (
             <EntypoIcon color={'black'} name="home" size={20} />

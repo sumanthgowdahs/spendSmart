@@ -10,9 +10,9 @@ import {
 import React from 'react';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
-import {colors} from '../android/app/src/utils/colors';
+import {colors} from './utils/colors';
 import Home from './compoents/Home';
-import AppNavigator from '../android/app/src/AppNavigator';
+import AppNavigator from './AppNavigator';
 
 export default function App() {
   return (
