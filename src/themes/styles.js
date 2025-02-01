@@ -6,8 +6,13 @@ export const fullPageWidthHeight = {
 export const whiteBackground = {
   backgroundColor: 'white',
 };
+// export const displayFlexAndCenter = {
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+// };
 export const displayFlexAndCenter = {
-  display: 'flex',
+  flex: 1,
   alignItems: 'center',
   justifyContent: 'center',
 };
